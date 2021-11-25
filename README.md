@@ -20,7 +20,7 @@ Seems like they are similar but with Tasks, we have some more flexibility from a
 
 Built a starter [DW using archetype](https://www.dropwizard.io/en/latest/getting-started.html#setting-up-using-maven). Then followed instructions to [set up a simple task](https://www.dropwizard.io/en/latest/manual/core.html#tasks).
 
-I opted to set up a PostBodyTask because I think thatServletEnvironment will provide the most flexibility.
+I opted to set up a PostBodyTask because I think that will provide the most flexibility.
 
 I also did a bit of source code reading to understand the default TaskServlet in the AdminEnvironment setup. One interesting thing is that by default it will return only `text/plain;charset=utf-8` content. I can live with that for my use case, but it seems possible to customize this to one's needs with a bit more source code exploration.
 
@@ -30,9 +30,11 @@ I immediately found I was having problems getting the PostBody that I was sendin
 curl -XPOST localhost:8081/tasks/flag -d "woooop" -v
 ```
 
-Turns out an unspoken rule is that by default, it doesn't seem to support `Content-Type: application/x-www-form-urlencoded`.
+Turns out an unspoken rule is that by default, `Content-Type: application/x-www-form-urlencoded` data is passed to the first parameter. Which I think is actually common, but something I often forget about since they both appear to use POST request method.
 
-When I changed to `application/json`, I had more success.
+When I changed to `application/json`, I had more success accessing the post body parameter.
+
+Either approach can work depending on your needs.
 ```shell
 curl -XPOST localhost:8081/tasks/flag -d "woooop" -v -H "Content-Type: application/json"
 ```
